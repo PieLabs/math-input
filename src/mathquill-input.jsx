@@ -11,6 +11,16 @@ export class MathQuillInput extends React.Component {
     this.onInputEdit = this.onInputEdit.bind(this);
   }
 
+  command(v) {
+    this.mathField.cmd(v);
+    this.mathField.focus();
+  }
+
+  keystroke(v) {
+    this.mathField.keystroke(v);
+    this.mathField.focus();
+  }
+
   write(v) {
     this.mathField.write(v);
     this.mathField.focus();

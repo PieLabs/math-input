@@ -2,6 +2,7 @@ const path = require('path');
 
 module.exports = {
   entry: './entry.jsx',
+  devtool: 'cheap-eval-source-map',
   context: __dirname,
   output: {
     filename: './bundle.js',

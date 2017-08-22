@@ -14,8 +14,17 @@ export class MathInput extends React.Component {
   }
 
   onClick(data) {
-    console.log('[MathInput] onClick: ', data);
-    this.mq.write(data.value);
+    console.log('[MathInput] onClick', data);
+    const { type, value } = data;
+    if (value === 'clear') {
+      this.props.onLatexChange('');
+    } else if (type === 'command') {
+      this.mq.command(data.value);
+    } else if (type === 'cursor') {
+      this.mq.keystroke(data.value);
+    } else {
+      this.mq.write(data.value);
+    }
   }
 
   render() {

@@ -2,21 +2,19 @@ import * as React from 'react';
 
 import { createStyleSheet, withStyles } from 'material-ui/styles';
 
-import Clear from 'material-ui-icons/Clear';
-import DeleteIcon from 'material-ui-icons/Delete';
-import Backspace from 'material-ui-icons/Backspace';
-import Down from 'material-ui-icons/KeyboardArrowDown';
-import Extras from './new-extras';
+import Extras from './extras';
 import IconButton from 'material-ui/IconButton';
-import Left from 'material-ui-icons/KeyboardArrowLeft';
 import NumberPad from './number-pad';
-import Right from 'material-ui-icons/KeyboardArrowRight';
-import Up from 'material-ui-icons/KeyboardArrowUp';
 import { buttonStyle } from './styles';
 import injectSheet from 'react-jss';
 import merge from 'lodash/merge';
 import BasicOperatorsPad from './basic-operators';
-
+import Left from 'material-ui-icons/KeyboardArrowLeft';
+import Right from 'material-ui-icons/KeyboardArrowRight';
+import Up from 'material-ui-icons/KeyboardArrowUp';
+import Down from 'material-ui-icons/KeyboardArrowDown';
+import Backspace from 'material-ui-icons/Backspace';
+import Clear from 'material-ui-icons/Clear';
 
 const topRowStyle = merge(buttonStyle(), {
   root: {
@@ -34,21 +32,22 @@ const Blank = withStyles(
   }))(props => <div className={props.classes.root}></div>);
 
 const RawIb = (props) => (
-  <IconButton classes={
-    { root: props.classes.root, label: props.classes.label }
-  }>{props.children}</IconButton >);
+  <IconButton
+    {...props}
+    classes={
+      { root: props.classes.root, label: props.classes.label }
+    }>{props.children}</IconButton >);
 
 
-const Ib = withStyles(createStyleSheet('Ib', theme => baseStyle))(RawIb);
 const Tr = withStyles(createStyleSheet('Tr', theme => topRowStyle))(RawIb);
-const Special = withStyles(createStyleSheet('Special', theme => specialStyle))(RawIb);
 
-const cursor = ['left', 'right', 'up', 'down'];
+const cursor = ['Left', 'Right', 'Up', 'Down'];
+
 const icons = {
-  left: Left,
-  right: Right,
-  up: Up,
-  down: Down
+  Left: Left,
+  Right: Right,
+  Up: Up,
+  Down: Down
 }
 
 const TopRow = (props) => (
@@ -59,39 +58,45 @@ const TopRow = (props) => (
     })}
     <Blank />
     <Blank />
-    <Tr><Backspace /></Tr>
-    <Tr><Clear /></Tr>
+    <Tr
+      onClick={() => props.onClick('Backspace')}>    <Backspace />
+    </Tr>
+    <Tr><Clear onClick={() => props.onClick('clear')} /></Tr>
   </div>
 );
-
-
-const RawMiddleRow = ({ classes }) => (
-  <div className={classes.row}>
-    <Numbers />
-    <Extras />
-  </div>
-)
-
-const middleRowStyles = createStyleSheet('MiddleRow', theme => ({
-  row: {
-    display: 'flex'
-  }
-}));
-
-const MiddleRow = withStyles(middleRowStyles)(RawMiddleRow);
-
 
 export class Keypad extends React.PureComponent {
 
   constructor(props) {
     super(props);
     this.onNumberPadClick = this.onNumberPadClick.bind(this);
+    this.onTopRowClick = this.onTopRowClick.bind(this);
+    this.onBasicOperatorsClick = this.onBasicOperatorsClick.bind(this);
+    this.onExtrasClick = this.onExtrasClick.bind(this);
+
+  }
+
+  onTopRowClick(value) {
+    this.props.onClick({
+      value,
+      type: 'cursor'
+    });
   }
 
   onNumberPadClick(value) {
     this.props.onClick({
       value
     })
+  }
+
+  onBasicOperatorsClick(value) {
+    this.props.onClick({
+      value
+    })
+  }
+
+  onExtrasClick(data) {
+    this.props.onClick(data);
   }
 
   render() {

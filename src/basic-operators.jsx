@@ -14,7 +14,12 @@ const styles = createStyleSheet('BasicOperatorsPad', theme => ({
   }
 }));
 
-export const defaults = ['/', '*', '-', '+'];
+//symbol: $sce.trustAsHtml('&#247'), logic: 'cmd', command: '\\div', shortcut: '', 
+export const defaults = [
+  { label: '&divide;', value: '\\div' },
+  { label: '*', value: '\\times' },
+  '-',
+  '+'];
 
 const baseStyles = merge(buttonStyle(), {
   root: {
@@ -24,10 +29,15 @@ const baseStyles = merge(buttonStyle(), {
 });
 
 const BasicOperatorsPadButton = withStyles(createStyleSheet(baseStyles))((props) => {
+
+  const label = props.children.toString();
+
   return <IconButton
     onClick={() => props.onClick(props.value)}
-    classes={props.classes}
-  >{props.children}</IconButton>
+    classes={props.classes}>
+    <span dangerouslySetInnerHTML={
+      { __html: label }
+    }></span></IconButton>;
 });
 
 
@@ -38,8 +48,8 @@ export class BasicOperatorsPad extends React.Component {
     this.onClick = this.onClick.bind(this);
   }
 
-  onClick() {
-    console.log('onClick: ', arguments);
+  onClick(value) {
+    this.props.onClick(value);
   }
 
   render() {
@@ -47,18 +57,20 @@ export class BasicOperatorsPad extends React.Component {
     return <div className={classes.root}>
       {values.map(v => {
 
+        const label = v.label || v;
+        const value = v.value || v;
         return <BasicOperatorsPadButton
-          key={v}
+          key={label}
           onClick={this.onClick}
-          value={v}
-        >{v}</BasicOperatorsPadButton>
+          value={value}
+        >{label}</BasicOperatorsPadButton>
       })}
     </div>
   }
 }
 
 BasicOperatorsPad.propTypes = {
-  values: PropTypes.arrayOf(PropTypes.string)
+  values: PropTypes.array
 }
 
 BasicOperatorsPad.defaultProps = {
