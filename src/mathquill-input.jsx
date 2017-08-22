@@ -52,7 +52,11 @@ export class MathQuillInput extends React.Component {
 
   render() {
 
-    return <div><div ref={r => this.input = r}></div></div>;
+    return <div
+      onClick={this.props.onClick}>
+      <div ref={r => this.input = r}
+        onFocus={() => this.props.onClick}></div>
+    </div>;
   }
 }
 
