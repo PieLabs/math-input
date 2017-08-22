@@ -10,12 +10,23 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
+      },
+      {
         test: /\.jsx$/,
         use: {
           loader: 'babel-loader',
           options: {
             presets: ['react', 'es2015', 'stage-0']
           }
+        }
+      },
+      {
+        test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2|otf)$/,
+        loader: 'url-loader',
+        options: {
+          limit: 10000
         }
       }
     ]

@@ -6,6 +6,8 @@ export default ({ children }) => (
   <svg
     x="0px"
     y="0px"
+    width="100%"
+    height="100%"
     viewBox="0 0 58 58"
     style={{ enableBackground: 'new 0 0 58 58' }}>
     {children}
