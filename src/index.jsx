@@ -45,6 +45,10 @@ export class MathInput extends React.Component {
     this.setState({ showCalculator: false });
   }
 
+  onInputOpen() {
+
+  }
+
   render() {
     const { classes, latex, onLatexChange } = this.props;
     const { showCalculator } = this.state;
@@ -57,8 +61,9 @@ export class MathInput extends React.Component {
         onClick={this.onInputClick} />
       <Portal
         closeOnEsc closeOnOutsideClick isOpened={showCalculator}
-        onClose={this.onInputClose}>
-        <div>
+        onClose={this.onInputClose}
+        onOpen={this.onInputOpen}>
+        <div ref={}>
           <Card className={classes.card}>
             <CardContent>
               <Keypad onClick={this.onClick} />
