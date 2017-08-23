@@ -1,8 +1,5 @@
-
-
-import React from 'react';
 import MathQuill from 'mathquill';
-
+import React from 'react';
 
 export class MathQuillInput extends React.Component {
 
@@ -46,13 +43,13 @@ export class MathQuillInput extends React.Component {
   }
 
   componentDidUpdate() {
-    console.log('latex: ', this.props.latex);
     this.mathField.latex(this.props.latex);
   }
 
   render() {
 
     return <div
+      ref={r => this.el = r}
       onClick={this.props.onClick}>
       <div ref={r => this.input = r}
         onFocus={() => this.props.onClick}></div>

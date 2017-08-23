@@ -1,10 +1,11 @@
 import * as React from 'react';
+
+import Card, { CardActions, CardContent } from 'material-ui/Card';
 import { createStyleSheet, withStyles } from 'material-ui/styles';
-import Portal from 'react-portal';
 
 import Keypad from './keypad';
-import Card, { CardActions, CardContent } from 'material-ui/Card';
 import MathQuillInput from './mathquill-input';
+import Portal from 'react-portal';
 
 export class MathInput extends React.Component {
 
@@ -34,19 +35,27 @@ export class MathInput extends React.Component {
   }
 
   onInputClick() {
-    console.log('onInputClick...', this.state);
     if (this.state.showCalculator === false) {
       this.setState({ showCalculator: true });
     }
   }
 
   onInputClose() {
-    console.log('close...')
     this.setState({ showCalculator: false });
   }
 
-  onInputOpen() {
+  componentDidUpdate() {
 
+    if (this.state.showCalculator) {
+
+      if (this.holder && this.mq) {
+        const bounds = this.mq.el.getBoundingClientRect();
+
+        this.holder.style.left = `${bounds.left}px`;
+        this.holder.style.top = `${bounds.top + bounds.height}px`;
+      }
+
+    }
   }
 
   render() {
@@ -61,12 +70,13 @@ export class MathInput extends React.Component {
         onClick={this.onInputClick} />
       <Portal
         closeOnEsc closeOnOutsideClick isOpened={showCalculator}
-        onClose={this.onInputClose}
-        onOpen={this.onInputOpen}>
-        <div ref={}>
+        onClose={this.onInputClose}>
+        <div
+          ref={r => this.holder = r}
+          className={classes.holder}>
           <Card className={classes.card}>
             <CardContent>
-              <Keypad onClick={this.onClick} />
+              <Keypad onClick={this.onClick} latex={latex} onChange={onLatexChange} />
             </CardContent>
           </Card>
         </div>
@@ -81,12 +91,19 @@ const styles = createStyleSheet('MathInput', {
     margin: '2px',
     display: 'inline-block',
     '& .mq-editable-field': {
-      border: 'solid 1px #99999',
-      outline: 'none'
+      border: 'solid 1px #cccccc',
+      outline: 'none',
+      transition: 'box-shadow 600ms linear, border 500ms linear'
     },
     '&  .mq-focused': {
-      boxShadow: 'none'
+      boxShadow: '0px 1px 5px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12)',
+      border: 'solid 1px #ffffff',
     }
+  },
+  holder: {
+    position: 'absolute',
+    display: 'grid',
+    minWidth: '380px'
   }
 });
 
