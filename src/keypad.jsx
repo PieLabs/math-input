@@ -131,7 +131,6 @@ export class Keypad extends React.PureComponent {
   }
 
   render() {
-    console.log('[Keypad] render...');
     const { classes, latex, onChange } = this.props;
     const { showCode } = this.state;
 
