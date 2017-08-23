@@ -1,5 +1,8 @@
 {
-  "name": "math-input",
+  "name": "@pie-libs/math-input",
+  "publishConfig": {
+    "access": "public"
+  },
   "version": "0.1.0",
   "main": "lib/index.js",
   "dependencies": {
