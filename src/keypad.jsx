@@ -45,6 +45,7 @@ const RawIconButton = (props) => {
   const root = props.hide ? props.classes.hideRoot : props.classes.root;
   return <IconButton
     onClick={props.onClick}
+    tabIndex={'-1'}
     classes={
       { root, label: props.classes.label }
     }>{props.children}</IconButton >
@@ -131,12 +132,14 @@ export class Keypad extends React.PureComponent {
   }
 
   render() {
-    const { classes, latex, onChange } = this.props;
+    const { classes, latex, onChange, onFocus } = this.props;
     const { showCode } = this.state;
 
     const holderClasses = classNames(classes.padHolder, showCode && classes.hidden);
 
-    return <div className={classes.root}>
+    return <div
+      className={classes.root}
+      onFocus={onFocus}>
       <TopRow className={classes.topRow}
         onClick={this.onTopRowClick}
         onCodeToggle={this.toggleCode}

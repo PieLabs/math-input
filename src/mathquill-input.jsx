@@ -6,6 +6,13 @@ export class MathQuillInput extends React.Component {
   constructor(props) {
     super(props);
     this.onInputEdit = this.onInputEdit.bind(this);
+    this.onFocus = this.onFocus.bind(this);
+    this.onBlur = this.onBlur.bind(this);
+  }
+
+  focus() {
+    console.log('focus mathfield...');
+    this.mathField.focus();
   }
 
   command(v) {
@@ -26,6 +33,7 @@ export class MathQuillInput extends React.Component {
 
   onInputEdit(mf) {
     this.props.onChange(this.mathField.latex());
+    this.mathField.focus();
   }
 
   componentDidMount() {
@@ -36,6 +44,22 @@ export class MathQuillInput extends React.Component {
       }
     });
     this.mathField.latex(this.props.latex);
+
+    // this.mathField.el().addEventListener('onfocus', this.onFocus);
+  }
+
+  onFocus(e) {
+    console.log('[MathquillInput] onFocus..');
+    this.props.onFocus(e)
+  }
+
+  onBlur(e) {
+    console.log('[MathquillInput] onBlur..');
+    this.props.onBlur(e)
+  }
+
+  componentWillUnmount() {
+    // this.mathField.el().removeEventListener('onfocus', this.onFocus);
   }
 
   shouldComponentUpdate(nextProps) {
@@ -52,7 +76,8 @@ export class MathQuillInput extends React.Component {
       ref={r => this.el = r}
       onClick={this.props.onClick}>
       <div ref={r => this.input = r}
-        onFocus={() => this.props.onClick}></div>
+        onFocus={this.onFocus}
+        onBlur={this.onBlur}></div>
     </div>;
   }
 }

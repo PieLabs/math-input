@@ -3,8 +3,8 @@ import { createStyleSheet, withStyles } from 'material-ui/styles'
 import IconButton from 'material-ui/IconButton';
 import PropTypes from 'prop-types';
 import React from 'react';
-import merge from 'lodash/merge';
 import { buttonStyle } from './styles';
+import merge from 'lodash/merge';
 
 const styles = createStyleSheet('BasicOperatorsPad', theme => ({
   root: {
@@ -33,6 +33,7 @@ const BasicOperatorsPadButton = withStyles(createStyleSheet(baseStyles))((props)
   const label = props.children.toString();
 
   return <IconButton
+    tabIndex={'-1'}
     onClick={() => props.onClick(props.value)}
     classes={props.classes}>
     <span dangerouslySetInnerHTML={

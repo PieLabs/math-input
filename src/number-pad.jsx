@@ -29,6 +29,7 @@ const baseStyles = merge(buttonStyle(), {
 
 const NumberPadButton = withStyles(createStyleSheet(baseStyles))((props) => {
   return <IconButton
+    tabIndex={'-1'}
     onClick={(e) => {
       props.onClick(props.value)
     }}

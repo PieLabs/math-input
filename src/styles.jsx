@@ -1,11 +1,12 @@
 import IconButton from 'material-ui/IconButton';
 import React from 'react';
 
-
 export const OverrideIconButton = (props) => (
-  <IconButton classes={
-    { root: props.classes.root, label: props.classes.label }
-  }>{props.children}</IconButton>);
+  <IconButton
+    tabIndex={'-1'}
+    classes={
+      { root: props.classes.root, label: props.classes.label }
+    }>{props.children}</IconButton>);
 
 
 export const buttonStyle = () => ({

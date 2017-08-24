@@ -17,8 +17,10 @@ class CodeEditor extends React.Component {
   render() {
     const { latex, classes } = this.props;
     return <textarea
+      tabIndex={'-1'}
       value={latex}
-      onChange={this.onChange} className={classes.root}></textarea>;
+      onChange={this.onChange}
+      className={classes.root}></textarea>;
   }
 }
 
