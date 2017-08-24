@@ -1,7 +1,6 @@
 import { createStyleSheet, withStyles } from 'material-ui/styles';
 
 import React from 'react';
-import debounce from 'lodash/debounce';
 
 class CodeEditor extends React.Component {
 
@@ -13,14 +12,14 @@ class CodeEditor extends React.Component {
     }
   }
 
-
   render() {
-    const { latex, classes } = this.props;
+    const { latex, classes, onBlur } = this.props;
     return <textarea
       tabIndex={'-1'}
       value={latex}
       onChange={this.onChange}
-      className={classes.root}></textarea>;
+      className={classes.root}
+      onBlur={onBlur}></textarea>;
   }
 }
 

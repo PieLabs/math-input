@@ -17,8 +17,11 @@ import Up from 'material-ui-icons/KeyboardArrowUp';
 import { buttonStyle } from './styles';
 import classNames from 'classnames';
 import cloneDeep from 'lodash/cloneDeep';
+import debug from 'debug';
 import injectSheet from 'react-jss';
 import merge from 'lodash/merge';
+
+const log = debug('math-input:keypad');
 
 const bs = buttonStyle();
 
@@ -48,9 +51,8 @@ const RawIconButton = (props) => {
     tabIndex={'-1'}
     classes={
       { root, label: props.classes.label }
-    }>{props.children}</IconButton >
+    }>{props.children}</IconButton>
 }
-
 
 const Tr = withStyles(createStyleSheet('Tr', theme => topRowStyle))(RawIconButton);
 
@@ -93,58 +95,65 @@ export class Keypad extends React.PureComponent {
 
   constructor(props) {
     super(props);
-    this.onNumberPadClick = this.onNumberPadClick.bind(this);
-    this.onTopRowClick = this.onTopRowClick.bind(this);
-    this.onBasicOperatorsClick = this.onBasicOperatorsClick.bind(this);
-    this.onExtrasClick = this.onExtrasClick.bind(this);
-    this.toggleCode = this.toggleCode.bind(this);
     this.state = {
       showCode: false
+    }
+
+    this.onFocus = (e) => {
+      log('onFocus', e);
+      if (this.props.onFocus) {
+        this.props.onFocus(e);
+      }
+    }
+
+    this.onTopRowClick = (value) => {
+      this.props.onClick({
+        value,
+        type: 'cursor'
+      });
+    }
+
+    this.onNumberPadClick = (value) => {
+      this.props.onClick({
+        value
+      })
+    }
+
+    this.onBasicOperatorsClick = (value) => {
+      this.props.onClick({
+        value
+      })
+    }
+
+    this.onExtrasClick = (data) => {
+      this.props.onClick(data);
+    }
+
+    this.toggleCode = () => {
+      this.setState({ showCode: !this.state.showCode }, () => {
+        this.props.onToggleCode && this.props.onToggleCode();
+      });
     }
   }
 
 
-  onTopRowClick(value) {
-    this.props.onClick({
-      value,
-      type: 'cursor'
-    });
-  }
-
-  onNumberPadClick(value) {
-    this.props.onClick({
-      value
-    })
-  }
-
-  onBasicOperatorsClick(value) {
-    this.props.onClick({
-      value
-    })
-  }
-
-  onExtrasClick(data) {
-    this.props.onClick(data);
-  }
-
-  toggleCode() {
-    this.setState({ showCode: !this.state.showCode });
-  }
-
   render() {
-    const { classes, latex, onChange, onFocus } = this.props;
+    const { classes, latex, onChange, onCodeEditorBlur } = this.props;
     const { showCode } = this.state;
-
     const holderClasses = classNames(classes.padHolder, showCode && classes.hidden);
 
     return <div
       className={classes.root}
-      onFocus={onFocus}>
+      onFocus={this.onFocus}
+      tabIndex={'-1'}>
       <TopRow className={classes.topRow}
         onClick={this.onTopRowClick}
         onCodeToggle={this.toggleCode}
         showingCode={showCode} />
-      <CodeEditor latex={latex} onChange={onChange} />
+      <CodeEditor
+        latex={latex}
+        onChange={onChange}
+        onBlur={onCodeEditorBlur} />
       <div className={holderClasses}>
         <NumberPad onClick={this.onNumberPadClick} />
         <BasicOperatorsPad onClick={this.onBasicOperatorsClick} />
@@ -159,7 +168,10 @@ const styles = {
     minWidth: '350px',
     display: 'grid',
     gridTemplateRows: '1fr 4fr',
-    gridColumnGap: '0px'
+    gridColumnGap: '0px',
+    '&:focus': {
+      outline: 'none'
+    }
   },
   hidden: {
     opacity: 0,
@@ -177,7 +189,6 @@ const styles = {
     gridTemplateColumns: 'repeat(8, 1fr)',
     gridRowGap: '0px',
     gridColumnGap: '0px',
-
   }
 }
 

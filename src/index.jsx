@@ -6,140 +6,144 @@ import { createStyleSheet, withStyles } from 'material-ui/styles';
 import Keypad from './keypad';
 import MathQuillInput from './mathquill-input';
 import Portal from 'react-portal';
+import debug from 'debug';
+
+const log = debug('math-input');
 
 export class MathInput extends React.Component {
 
-
   constructor(props) {
     super(props);
-    this.onClick = this.onClick.bind(this);
-    this.onInputClick = this.onInputClick.bind(this);
-    this.onInputClose = this.onInputClose.bind(this);
-    this.onKeyDown = this.onKeyDown.bind(this);
-    this.onBeforeInput = this.onBeforeInput.bind(this);
-    this.onInputFocus = this.onInputFocus.bind(this);
-    this.onInputBlur = this.onInputBlur.bind(this);
 
     this.state = {
       showCalculator: false
     }
-  }
 
-  onClick(data) {
-    console.log('[MathInput] onClick', data);
-    const { type, value } = data;
-    if (value === 'clear') {
-      this.props.onLatexChange('');
-    } else if (type === 'command') {
-      this.mq.command(data.value);
-    } else if (type === 'cursor') {
-      this.mq.keystroke(data.value);
-    } else {
-      this.mq.write(data.value);
+    this.onKeypadFocus = (e) => {
+      log('>> onKeypadFocus', e);
+      this.setState({ removePortal: false });
     }
-  }
 
-  onInputClick() {
-    if (this.state.showCalculator === false) {
+    this.onClick = (data) => {
+      const { type, value } = data;
+      if (value === 'clear') {
+        this.props.onLatexChange('');
+      } else if (type === 'command') {
+        this.mq.command(data.value);
+      } else if (type === 'cursor') {
+        this.mq.keystroke(data.value);
+      } else {
+        this.mq.write(data.value);
+      }
+    }
+
+    this.onInputClick = (e) => {
+      if (this.props.onInputClick) {
+        this.props.onInputClick(e);
+      }
+    }
+
+    this.onInputFocus = (e) => {
+      log('onInputFocus');
+
       this.setState({ showCalculator: true });
+      if (this.props.onFocus) {
+        this.props.onFocus(e);
+      }
+    }
+
+    this.blur = () => {
+      log('blur ... ');
+      this.setState({ showCalculator: false });
+      if (this.props.onBlur) {
+        this.props.onBlur(e);
+      }
+    }
+
+    this.onInputBlur = (e) => {
+      this.setState({ removePortal: true });
+      setTimeout(() => {
+        if (this.state.removePortal) {
+          this.blur();
+          this.setState({ removePortal: false });
+        }
+      }, 100);
+    }
+
+    this.onCodeEditorBlur = (e) => {
+      this.setState({ removePortal: true });
+      setTimeout(() => {
+        if (this.state.removePortal) {
+          this.blur();
+        }
+      }, 100);
+    }
+
+    this.onToggleCode = (codeShowing) => {
+      if (!codeShowing) {
+        this.mq.focus();
+      }
     }
   }
 
-  onInputClose() {
-    //this.setState({ showCalculator: false });
-  }
 
   componentDidUpdate() {
 
-    console.log('componentDidUpdate, showCalculator: ', this.state.showCalculator);
+    log('componentDidUpdate, showCalculator: ', this.state.showCalculator);
 
     if (this.state.showCalculator) {
 
       if (this.holder && this.mq) {
         const bounds = this.mq.el.getBoundingClientRect();
-
         this.holder.style.left = `${bounds.left}px`;
         this.holder.style.top = `${bounds.top + bounds.height}px`;
       }
     }
   }
 
-  onKeyDown(e) {
-    console.log('[MathInput] onKeyDown, e:', e);
-    // e.preventDefault();
-    // e.stopPropagation();
-  }
 
-  onBeforeInput(e) {
-    console.log('[MathInput] onBeforeInput, e:', e);
-    // e.preventDefault();
-    // e.stopPropagation();
-  }
 
-  componentDidMount() {
-    console.log('add key down listener...to : ', this.mq.mathField.el());
-    this.mq.mathField.el().addEventListener('keydown', this.onKeyDown, true);
-    this.mq.mathField.el().addEventListener('beforeinput', this.onBeforeInput, true);
-  }
-  componentWillUnmount() {
-    this.mq.mathField.el().removeEventListener('keydown', this.onKeyDown, true);
-    this.mq.mathField.el().removeEventListener('beforeinput', this.onBeforeInput, true);
-  }
-
-  onInputFocus(e) {
-    console.log('[MathInput] onInputFocus');
-    this.setState({ showCalculator: true });
-    if (this.props.onFocus) {
-      this.props.onFocus(e);
-    }
-  }
-
-  onInputBlur(e) {
-    console.log('[MathInput] onInputBlur');
-    console.log('>> ', e.relatedTarget);
-    this.setState({ showCalculator: false });
-    if (this.props.onBlur) {
-      this.props.onBlur(e);
-    }
-    // if (this.holder && !this.holder.contains(e.relatedTarget)) {
-    // }
-  }
-
-  contains(node) {
-    if (!this.root) {
-      console.warn('no root node');
-    }
-
-    return this.root && this.root.contains(node);
-  }
   render() {
-    const { classes, latex, onLatexChange } = this.props;
+    const { classes, latex, onLatexChange, readOnly } = this.props;
     const { showCalculator } = this.state;
 
-    console.log('render: ', this.state);
+    log('render: readOnly: ', readOnly);
+
+    log('render: ', this.state);
     return <div
       className={classes.root}
       ref={r => this.root = r}>
       <MathQuillInput
         ref={r => this.mq = r}
         latex={latex}
+        readOnly={readOnly}
         onChange={onLatexChange}
         onFocus={this.onInputFocus}
         onBlur={this.onInputBlur}
+        onClick={this.onInputClick}
       />
-      {/* <Portal
-        isOpened={showCalculator}
-        onClose={this.onInputClose}>
-        <div
-          ref={r => this.holder = r}
-          className={classes.holder}>
-          <Card className={classes.card}>
-            <CardContent>
-              <Keypad onClick={this.onClick} latex={latex} onChange={onLatexChange} />
-            </CardContent>
-          </Card>
-        </div>
-      </Portal> */}
+      {!readOnly &&
+        <Portal
+          isOpened={showCalculator}
+          onClose={this.onInputClose}>
+          <div
+            ref={r => this.holder = r}
+            className={classes.holder}>
+            <Card className={classes.card}>
+              <CardContent>
+                <Keypad
+                  onFocus={this.onKeypadFocus}
+                  onClick={this.onClick}
+                  latex={latex}
+                  onChange={onLatexChange}
+                  onToggleCode={this.onToggleCode}
+                  onCodeEditorBlur={this.onCodeEditorBlur} />
+              </CardContent>
+            </Card>
+          </div>
+        </Portal>
+
+      }
     </div>;
   }
 }

@@ -14,7 +14,6 @@ const styles = createStyleSheet('BasicOperatorsPad', theme => ({
   }
 }));
 
-//symbol: $sce.trustAsHtml('&#247'), logic: 'cmd', command: '\\div', shortcut: '', 
 export const defaults = [
   { label: '&divide;', value: '\\div' },
   { label: '*', value: '\\times' },
@@ -41,16 +40,13 @@ const BasicOperatorsPadButton = withStyles(createStyleSheet(baseStyles))((props)
     }></span></IconButton>;
 });
 
-
 export class BasicOperatorsPad extends React.Component {
 
   constructor(props) {
     super(props);
-    this.onClick = this.onClick.bind(this);
-  }
-
-  onClick(value) {
-    this.props.onClick(value);
+    this.onClick = (value) => {
+      this.props.onClick(value);
+    }
   }
 
   render() {

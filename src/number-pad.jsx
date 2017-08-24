@@ -37,7 +37,6 @@ const NumberPadButton = withStyles(createStyleSheet(baseStyles))((props) => {
   >{props.children}</IconButton>
 });
 
-
 const EqualsButton = withStyles(createStyleSheet('ZeroButton', merge(buttonStyle(), {
   root: {
     backgroundColor: 'orange',

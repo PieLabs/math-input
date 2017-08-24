@@ -86,6 +86,7 @@ export class Extras extends React.Component {
         const Icon = b.icon ? b.icon : 'div';
         return <B
           key={index}
+          tabIndex={'-1'}
           className={classes.holder}
           onClick={() => onClick({ value: b.command, type: b.logic })}
         ><Icon /></B>

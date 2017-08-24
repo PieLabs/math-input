@@ -2,13 +2,13 @@ import MathInput from '../src';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-
 class Demo extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      latex: '\\frac{3}{2}'
+      latex: '\\frac{3}{2}',
+      readOnly: true
     }
     this.onChange = this.onChange.bind(this);
   }
@@ -18,9 +18,16 @@ class Demo extends React.Component {
   }
 
   render() {
+    const { readOnly, latex } = this.state;
     return <div>
-      <MathInput latex={this.state.latex} onLatexChange={this.onChange} />
-      <pre>{JSON.stringify(this.state.latex, null, '  ')}</pre>
+      <label> Read Only ?
+        <input type="checkbox" checked={readOnly} onChange={() => this.setState({ readOnly: !this.state.readOnly })} />
+      </label>
+      <MathInput
+        readOnly={readOnly}
+        latex={latex}
+        onLatexChange={this.onChange} />
+      <pre>{JSON.stringify(latex, null, '  ')}</pre>
     </div>
   }
 }

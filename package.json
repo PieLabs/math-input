@@ -10,6 +10,7 @@
     "@types/react": "^16.0.2",
     "@types/react-dom": "^15.5.3",
     "css-loader": "^0.28.5",
+    "debug": "^3.0.0",
     "file-loader": "^0.11.2",
     "lodash": "^4.17.4",
     "material-ui": "^1.0.0-beta.4",
