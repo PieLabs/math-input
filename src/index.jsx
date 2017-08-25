@@ -86,12 +86,18 @@ export class MathInput extends React.Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.readOnly) {
+      this.setState({ showCalculator: false });
+    }
+  }
 
   componentDidUpdate() {
 
-    log('componentDidUpdate, showCalculator: ', this.state.showCalculator);
+    const { showCalculator } = this.state;
+    log('componentDidUpdate, showCalculator: ', showCalculator);
 
-    if (this.state.showCalculator) {
+    if (showCalculator) {
 
       if (this.holder && this.mq) {
         const bounds = this.mq.el.getBoundingClientRect();
@@ -114,7 +120,7 @@ export class MathInput extends React.Component {
       className={classes.root}
       ref={r => this.root = r}>
       <MathQuillInput
-        ref={r => this.mq = r}
+        innerRef={r => this.mq = r}
         latex={latex}
         readOnly={readOnly}
         onChange={onLatexChange}
@@ -122,28 +128,25 @@ export class MathInput extends React.Component {
         onBlur={this.onInputBlur}
         onClick={this.onInputClick}
       />
-      {!readOnly &&
-        <Portal
-          isOpened={showCalculator}
-          onClose={this.onInputClose}>
-          <div
-            ref={r => this.holder = r}
-            className={classes.holder}>
-            <Card className={classes.card}>
-              <CardContent>
-                <Keypad
-                  onFocus={this.onKeypadFocus}
-                  onClick={this.onClick}
-                  latex={latex}
-                  onChange={onLatexChange}
-                  onToggleCode={this.onToggleCode}
-                  onCodeEditorBlur={this.onCodeEditorBlur} />
-              </CardContent>
-            </Card>
-          </div>
-        </Portal>
-
-      }
+      <Portal
+        isOpened={showCalculator && !readOnly}
+        onClose={this.onInputClose}>
+        <div
+          ref={r => this.holder = r}
+          className={classes.holder}>
+          <Card className={classes.card}>
+            <CardContent>
+              <Keypad
+                onFocus={this.onKeypadFocus}
+                onClick={this.onClick}
+                latex={latex}
+                onChange={onLatexChange}
+                onToggleCode={this.onToggleCode}
+                onCodeEditorBlur={this.onCodeEditorBlur} />
+            </CardContent>
+          </Card>
+        </div>
+      </Portal>
     </div>;
   }
 }

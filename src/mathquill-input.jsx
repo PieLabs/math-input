@@ -1,6 +1,9 @@
+import { createStyleSheet, withStyles } from 'material-ui/styles';
+
 import MathQuill from 'mathquill';
 import PropTypes from 'prop-types';
 import React from 'react';
+import classNames from 'classnames';
 import debug from 'debug';
 
 const log = debug('math-input:mathquill-input');
@@ -55,30 +58,35 @@ export class MathQuillInput extends React.Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    return nextProps.latex !== this.mathField.latex() || nextProps.readOnly !== this.props.readOnly;
+    const shouldUpdate = nextProps.latex !== this.mathField.latex() || nextProps.readOnly !== this.props.readOnly;
+    log('[shouldComponentUpdate]', shouldUpdate);
+    return shouldUpdate;
   }
 
   updateMathField() {
     const { readOnly } = this.props;
 
-    log('readOnly: ', readOnly);
-
-    if (readOnly && (!this.mathField || this.mathField instanceof MQ.MathField)) {
-      log('create StaticMath');
-      this.mathField = MQ.StaticMath(this.input)
-    }
-
-    if (!readOnly && (!this.mathField || this.mathField instanceof MQ.StaticMath)) {
-      log('create MathField');
-      this.mathField = MQ.MathField(this.input, {
-        handlers: {
-          edit: this.onInputEdit
-        }
-      });
-    }
+    log('[updateMathField] readOnly: ', readOnly);
 
     this.mathField.latex(this.props.latex);
+    this.staticField.latex(this.props.latex);
   }
+
+  componentDidMount() {
+    this.staticField = MQ.StaticMath(this.static);
+
+    this.mathField = MQ.MathField(this.input, {
+      handlers: {
+        edit: this.onInputEdit
+      }
+    });
+    this.updateMathField();
+  }
+
+  componentWillUnmount() {
+
+  }
+
 
   componentDidUpdate() {
     log('[componentDidUpdate] readOnly: ', this.props.readOnly);
@@ -86,14 +94,24 @@ export class MathQuillInput extends React.Component {
   }
 
   render() {
+    const { readOnly, classes } = this.props;
+    const inputClassNames = classNames(readOnly && classes.hidden);
+    const staticClassNames = classNames(!readOnly && classes.hidden);
+
     return (
       <div
         ref={r => this.el = r}
         onClick={this.props.onClick}>
-        <div
-          ref={r => this.input = r}
-          onFocus={this.onFocus}
-          onBlur={this.onBlur}></div>
+        <div className={inputClassNames}>
+          <span
+            ref={r => this.input = r}
+            onFocus={this.onFocus}
+            onBlur={this.onBlur}
+          ></span>
+        </div>
+        <div className={staticClassNames}>
+          <span ref={r => this.static = r}></span>
+        </div>
       </div>);
   }
 }
@@ -106,4 +124,11 @@ MathQuillInput.defaultProps = {
   readOnly: true
 }
 
-export default MathQuillInput;
+const styles = createStyleSheet('MathQuillInput', {
+  hidden: {
+    opacity: 0.2,
+    display: 'none'
+  }
+});
+
+export default withStyles(styles)(MathQuillInput);
