@@ -20,3 +20,8 @@ cd demo
 ```bash
 npm|yarn test
 ```
+
+
+## Using in another app
+
+We expose the jsx directly, so you'll need to update your build pipeline to build from src.
