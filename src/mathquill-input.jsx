@@ -73,6 +73,7 @@ export class MathQuillInput extends React.Component {
   }
 
   componentDidMount() {
+
     this.staticField = MQ.StaticMath(this.static);
 
     this.mathField = MQ.MathField(this.input, {
@@ -94,14 +95,14 @@ export class MathQuillInput extends React.Component {
   }
 
   render() {
-    const { readOnly, classes } = this.props;
+    const { readOnly, classes, onClick } = this.props;
     const inputClassNames = classNames(readOnly && classes.hidden);
     const staticClassNames = classNames(!readOnly && classes.hidden);
 
     return (
       <div
         ref={r => this.el = r}
-        onClick={this.props.onClick}>
+        onClick={onClick}>
         <div className={inputClassNames}>
           <span
             ref={r => this.input = r}
@@ -117,7 +118,8 @@ export class MathQuillInput extends React.Component {
 }
 
 MathQuillInput.propTypes = {
-  readOnly: PropTypes.bool.isRequired
+  readOnly: PropTypes.bool.isRequired,
+  onClick: PropTypes.func.isRequired
 }
 
 MathQuillInput.defaultProps = {

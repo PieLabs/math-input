@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MathQuillInput readonly false 1`] = `
+<div
+  onClick={[Function]}
+>
+  <div
+    className=""
+  >
+    <span
+      onBlur={[Function]}
+      onFocus={[Function]}
+    />
+  </div>
+  <div
+    className="MathQuillInput-hidden-1"
+  >
+    <span />
+  </div>
+</div>
+`;
+
+exports[`MathQuillInput readonly true 1`] = `
+<div
+  onClick={[Function]}
+>
+  <div
+    className="MathQuillInput-hidden-1"
+  >
+    <span
+      onBlur={[Function]}
+      onFocus={[Function]}
+    />
+  </div>
+  <div
+    className=""
+  >
+    <span />
+  </div>
+</div>
+`;
