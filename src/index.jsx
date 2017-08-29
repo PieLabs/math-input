@@ -110,12 +110,12 @@ export class MathInput extends React.Component {
 
 
   render() {
-    const { classes, latex, onLatexChange, readOnly } = this.props;
+    const { classes, latex, onLatexChange, readOnly, zIndex } = this.props;
     const { showCalculator } = this.state;
 
     log('render: readOnly: ', readOnly);
+    const style = zIndex ? { zIndex } : {};
 
-    log('render: ', this.state);
     return <div
       className={classes.root}
       ref={r => this.root = r}>
@@ -133,7 +133,8 @@ export class MathInput extends React.Component {
         onClose={this.onInputClose}>
         <div
           ref={r => this.holder = r}
-          className={classes.holder}>
+          className={classes.holder}
+          style={style}>
           <Card className={classes.card}>
             <CardContent>
               <Keypad
@@ -169,7 +170,8 @@ const styles = createStyleSheet('MathInput', {
   holder: {
     position: 'absolute',
     display: 'grid',
-    minWidth: '380px'
+    minWidth: '380px',
+    zIndex: 10
   }
 });
 
