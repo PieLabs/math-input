@@ -3,11 +3,7 @@
   "publishConfig": {
     "access": "public"
   },
-<<<<<<< HEAD
-  "version": "0.0.1",
-=======
   "version": "0.2.0-prerelease",
->>>>>>> develop
   "main": "src/index.jsx",
   "dependencies": {
     "debug": "^3.0.0",
