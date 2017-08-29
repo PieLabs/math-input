@@ -102,7 +102,7 @@ export class MathInput extends React.Component {
       if (this.holder && this.mq) {
         const bounds = this.mq.el.getBoundingClientRect();
         this.holder.style.left = `${bounds.left}px`;
-        this.holder.style.top = `${bounds.top + bounds.height}px`;
+        this.holder.style.top = `${bounds.top + bounds.height + window.scrollY}px`;
       }
     }
   }
