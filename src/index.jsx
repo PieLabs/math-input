@@ -20,7 +20,6 @@ export class MathInput extends React.Component {
     }
 
     this.onKeypadFocus = (e) => {
-      log('>> onKeypadFocus', e);
       this.setState({ removePortal: false });
     }
 
@@ -159,12 +158,9 @@ const styles = createStyleSheet('MathInput', {
     display: 'inline-block',
     '& .mq-editable-field': {
       border: 'solid 1px #cccccc',
-      // outline: 'none',
       transition: 'box-shadow 600ms linear, border 500ms linear'
     },
     '& .mq-focused': {
-      // boxShadow: '0px 1px 5px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12)',
-      border: 'solid 1px #red',
     }
   },
   holder: {
