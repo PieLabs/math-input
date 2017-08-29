@@ -10,6 +10,15 @@ import debug from 'debug';
 
 const log = debug('math-input');
 
+
+const addLeftBracket = s => s.indexOf('\\(') === 0 ? s : `\\(${s}`;
+const addRightBracket = s => s.indexOf('\\)') === s.length - 2 ? s : `${s}\\)`;
+const rmLeftBracket = s => s.indexOf('\\(') === 0 ? s.substring(2) : s;
+const rmRightBracket = s => s.indexOf('\\)') === s.length - 2 ? s.substring(0, s.length - 2) : s;
+
+const addBrackets = (s) => addRightBracket(addLeftBracket(s));
+const removeBrackets = (s) => rmRightBracket(rmLeftBracket(s));
+
 export class MathInput extends React.Component {
 
   constructor(props) {
@@ -83,6 +92,11 @@ export class MathInput extends React.Component {
         this.mq.focus();
       }
     }
+
+    this.onLatexChange = (latex) => {
+      const { onLatexChange } = this.props;
+      onLatexChange(addBrackets(latex));
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -110,9 +124,10 @@ export class MathInput extends React.Component {
 
   render() {
     const { classes, latex, onLatexChange, readOnly, zIndex } = this.props;
+    const processedLatex = removeBrackets(latex);
     const { showCalculator } = this.state;
 
-    log('render: readOnly: ', readOnly);
+    log('[render] readOnly: ', readOnly, 'processedLatex: ', processedLatex);
     const style = zIndex ? { zIndex } : {};
 
     return <div
@@ -120,9 +135,9 @@ export class MathInput extends React.Component {
       ref={r => this.root = r}>
       <MathQuillInput
         innerRef={r => this.mq = r}
-        latex={latex}
+        latex={processedLatex}
         readOnly={readOnly}
-        onChange={onLatexChange}
+        onChange={this.onLatexChange}
         onFocus={this.onInputFocus}
         onBlur={this.onInputBlur}
         onClick={this.onInputClick}
@@ -139,8 +154,8 @@ export class MathInput extends React.Component {
               <Keypad
                 onFocus={this.onKeypadFocus}
                 onClick={this.onClick}
-                latex={latex}
-                onChange={onLatexChange}
+                latex={processedLatex}
+                onChange={this.onLatexChange}
                 onToggleCode={this.onToggleCode}
                 onCodeEditorBlur={this.onCodeEditorBlur} />
             </CardContent>
