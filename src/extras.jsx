@@ -17,11 +17,11 @@ import {
   Y
 } from './icons';
 import { OverrideIconButton, buttonStyle } from './styles';
-import { createStyleSheet, withStyles } from 'material-ui/styles';
 
 import React from 'react';
 import chunk from 'lodash/chunk';
 import merge from 'lodash/merge';
+import { withStyles } from 'material-ui/styles';
 
 // Subscript/Superscript section
 const subscript = { name: 'Subscript', icon: Subscript, symbol: 'x_n', logic: 'command', command: '_', shortcut: '', category: 'sub-sup' }; //<sub>n</sub>
@@ -62,7 +62,7 @@ const specialStyle = merge({}, buttonStyle(), {
   }
 });
 
-const Special = withStyles(createStyleSheet('Special', specialStyle))(OverrideIconButton);
+const Special = withStyles(specialStyle, { name: 'Special' })(OverrideIconButton);
 
 class B extends React.Component {
 
@@ -96,7 +96,7 @@ export class Extras extends React.Component {
 }
 
 export default withStyles(
-  createStyleSheet('Extras', ({
+  {
     root: {
       display: 'grid',
       gridTemplateColumns: 'repeat(4, 1fr)',
@@ -109,5 +109,4 @@ export default withStyles(
       height: '100%',
       backgroundColor: '#cceeff'
     }
-  }))
-)(Extras);
+  })(Extras);

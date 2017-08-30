@@ -1,19 +1,18 @@
-import { createStyleSheet, withStyles } from 'material-ui/styles'
-
 import IconButton from 'material-ui/IconButton';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { buttonStyle } from './styles';
 import merge from 'lodash/merge';
+import { withStyles } from 'material-ui/styles'
 
-const styles = createStyleSheet('NumberPad', theme => ({
+const styles = {
   root: {
     display: 'grid',
     gridTemplateColumns: 'repeat(3, 1fr)',
     gridRowGap: '0px',
     gridColumnGap: '0px'
   }
-}));
+};
 
 export const numbers = ['7', '8', '9', '4', '5', '6', '1', '2', '3', '0'];
 const extras = ['.', '='];
@@ -27,7 +26,7 @@ const baseStyles = merge(buttonStyle(), {
   }
 });
 
-const NumberPadButton = withStyles(createStyleSheet(baseStyles))((props) => {
+const NumberPadButton = withStyles(baseStyles)((props) => {
   return <IconButton
     tabIndex={'-1'}
     onClick={(e) => {
@@ -37,12 +36,12 @@ const NumberPadButton = withStyles(createStyleSheet(baseStyles))((props) => {
   >{props.children}</IconButton>
 });
 
-const EqualsButton = withStyles(createStyleSheet('ZeroButton', merge(buttonStyle(), {
+const EqualsButton = withStyles(merge(buttonStyle(), {
   root: {
     backgroundColor: 'orange',
     height: '100%'
   }
-})))(props => {
+}))(props => {
   return <NumberPadButton {...props} />
 })
 

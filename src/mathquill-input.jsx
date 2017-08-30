@@ -1,10 +1,9 @@
-import { createStyleSheet, withStyles } from 'material-ui/styles';
-
 import MathQuill from 'mathquill';
 import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
 import debug from 'debug';
+import { withStyles } from 'material-ui/styles';
 
 const log = debug('math-input:mathquill-input');
 const MQ = MathQuill.getInterface(2);
@@ -73,6 +72,7 @@ export class MathQuillInput extends React.Component {
   }
 
   componentDidMount() {
+
     this.staticField = MQ.StaticMath(this.static);
 
     this.mathField = MQ.MathField(this.input, {
@@ -83,25 +83,20 @@ export class MathQuillInput extends React.Component {
     this.updateMathField();
   }
 
-  componentWillUnmount() {
-
-  }
-
-
   componentDidUpdate() {
     log('[componentDidUpdate] readOnly: ', this.props.readOnly);
     this.updateMathField();
   }
 
   render() {
-    const { readOnly, classes } = this.props;
+    const { readOnly, classes, onClick } = this.props;
     const inputClassNames = classNames(readOnly && classes.hidden);
     const staticClassNames = classNames(!readOnly && classes.hidden);
 
     return (
       <div
         ref={r => this.el = r}
-        onClick={this.props.onClick}>
+        onClick={onClick}>
         <div className={inputClassNames}>
           <span
             ref={r => this.input = r}
@@ -117,18 +112,19 @@ export class MathQuillInput extends React.Component {
 }
 
 MathQuillInput.propTypes = {
-  readOnly: PropTypes.bool.isRequired
+  readOnly: PropTypes.bool.isRequired,
+  onClick: PropTypes.func.isRequired
 }
 
 MathQuillInput.defaultProps = {
   readOnly: true
 }
 
-const styles = createStyleSheet('MathQuillInput', {
+const styles = {
   hidden: {
     opacity: 0.2,
     display: 'none'
   }
-});
+};
 
-export default withStyles(styles)(MathQuillInput);
+export default withStyles(styles, { name: 'MathQuillInput' })(MathQuillInput);

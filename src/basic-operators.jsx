@@ -1,18 +1,17 @@
-import { createStyleSheet, withStyles } from 'material-ui/styles'
-
 import IconButton from 'material-ui/IconButton';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { buttonStyle } from './styles';
 import merge from 'lodash/merge';
+import { withStyles } from 'material-ui/styles'
 
-const styles = createStyleSheet('BasicOperatorsPad', theme => ({
+const styles = {
   root: {
     display: 'grid',
     gridRowGap: '0px',
     gridColumnGap: '0px'
   }
-}));
+};
 
 export const defaults = [
   { label: '&divide;', value: '\\div' },
@@ -27,7 +26,7 @@ const baseStyles = merge(buttonStyle(), {
   }
 });
 
-const BasicOperatorsPadButton = withStyles(createStyleSheet(baseStyles))((props) => {
+const BasicOperatorsPadButton = withStyles(baseStyles, { name: 'BasicOperators' })(props => {
 
   const label = props.children.toString();
 
@@ -74,5 +73,5 @@ BasicOperatorsPad.defaultProps = {
   values: defaults
 }
 
-const StyledBasicOperatorsPad = withStyles(styles)(BasicOperatorsPad);
+const StyledBasicOperatorsPad = withStyles(styles, { name: 'BasicOperatorsPad' })(BasicOperatorsPad);
 export default StyledBasicOperatorsPad;
