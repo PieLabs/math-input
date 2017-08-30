@@ -1,22 +1,31 @@
-const sinon = require('sinon');
+import { stub } from 'sinon';
 
-const stubField = () => ({
-  latex: sinon.stub()
-});
+const stubField = () => {
+  const out = {}
 
+  out.reset = () => {
+    out.latex = stub();
+    out.focus = stub();
+    out.cmd = stub();
+  }
 
-const staticField = stubField();
-const mathField = stubField();
+  out.reset();
+  return out;
+};
+
+export const staticField = stubField();
+export const mathField = stubField();
 
 const MQ = {
   StaticMath: () => staticField,
   MathField: () => mathField
 }
 
-const defaultExport = {
-  getInterface: () => MQ,
-  staticField,
-  mathField
+export default {
+  getInterface: () => MQ
 };
 
-module.exports = defaultExport
+export const resetMocks = () => {
+  staticField.reset();
+  mathField.reset();
+}
