@@ -1,7 +1,5 @@
 import * as React from 'react';
 
-import { createStyleSheet, withStyles } from 'material-ui/styles';
-
 import Backspace from 'material-ui-icons/Backspace';
 import BasicOperatorsPad from './basic-operators';
 import Clear from 'material-ui-icons/Clear';
@@ -18,8 +16,8 @@ import { buttonStyle } from './styles';
 import classNames from 'classnames';
 import cloneDeep from 'lodash/cloneDeep';
 import debug from 'debug';
-import injectSheet from 'react-jss';
 import merge from 'lodash/merge';
+import { withStyles } from 'material-ui/styles';
 
 const log = debug('math-input:keypad');
 
@@ -37,12 +35,12 @@ const topRowStyle = {
 };
 
 const Blank = withStyles(
-  createStyleSheet('Blank', {
+  {
     root: {
       display: 'inline-block',
       backgroundColor: 'white'
     }
-  }))(props => <div className={props.classes.root}></div>);
+  })(props => <div className={props.classes.root}></div>);
 
 const RawIconButton = (props) => {
   const root = props.hide ? props.classes.hideRoot : props.classes.root;
@@ -54,13 +52,13 @@ const RawIconButton = (props) => {
     }>{props.children}</IconButton>
 }
 
-const Tr = withStyles(createStyleSheet('Tr', theme => topRowStyle))(RawIconButton);
+const Tr = withStyles(topRowStyle, { name: 'TR' })(RawIconButton);
 
-const CodeButton = withStyles(createStyleSheet('Code', merge({}, topRowStyle, {
+const CodeButton = withStyles(merge({}, topRowStyle, {
   root: {
     backgroundColor: 'pink'
   }
-})))(RawIconButton);
+}), { name: 'IconButton' })(RawIconButton);
 
 const cursor = ['Left', 'Right', 'Up', 'Down'];
 
@@ -192,4 +190,4 @@ const styles = {
   }
 }
 
-export default injectSheet(styles)(Keypad);
+export default withStyles(styles, { name: 'Keypad' })(Keypad);

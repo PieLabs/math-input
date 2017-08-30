@@ -1,6 +1,5 @@
-import { createStyleSheet, withStyles } from 'material-ui/styles';
-
 import React from 'react';
+import { withStyles } from 'material-ui/styles';
 
 class CodeEditor extends React.Component {
 
@@ -24,7 +23,7 @@ class CodeEditor extends React.Component {
 }
 
 const StyledCodeEditor = withStyles(
-  createStyleSheet('CodeEditor', {
+  {
     root: {
       gridColumn: '1/8',
       gridRow: '2/5',
@@ -38,6 +37,6 @@ const StyledCodeEditor = withStyles(
         backgroundColor: '#ddffff'
       }
     }
-  }))(CodeEditor);
+  }, { name: 'CodeEditor' })(CodeEditor);
 
 export default StyledCodeEditor;

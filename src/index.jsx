@@ -1,12 +1,12 @@
 import * as React from 'react';
 
 import Card, { CardActions, CardContent } from 'material-ui/Card';
-import { createStyleSheet, withStyles } from 'material-ui/styles';
 
 import Keypad from './keypad';
 import MathQuillInput from './mathquill-input';
 import Portal from 'react-portal';
 import debug from 'debug';
+import { withStyles } from 'material-ui/styles';
 
 const log = debug('math-input');
 
@@ -123,7 +123,7 @@ export class MathInput extends React.Component {
 
 
   render() {
-    const { classes, latex, onLatexChange, readOnly, zIndex } = this.props;
+    const { classes, latex, readOnly, zIndex } = this.props;
     const processedLatex = removeBrackets(latex);
     const { showCalculator } = this.state;
 
@@ -166,7 +166,7 @@ export class MathInput extends React.Component {
   }
 }
 
-const styles = createStyleSheet('MathInput', {
+const styles = {
   root: {
     padding: '2px',
     margin: '2px',
@@ -184,6 +184,6 @@ const styles = createStyleSheet('MathInput', {
     minWidth: '380px',
     zIndex: 10
   }
-});
+};
 
-export default withStyles(styles)(MathInput);
+export default withStyles(styles, { name: 'MathInput' })(MathInput);

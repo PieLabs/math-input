@@ -1,10 +1,9 @@
-import { createStyleSheet, withStyles } from 'material-ui/styles';
-
 import MathQuill from 'mathquill';
 import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
 import debug from 'debug';
+import { withStyles } from 'material-ui/styles';
 
 const log = debug('math-input:mathquill-input');
 const MQ = MathQuill.getInterface(2);
@@ -121,11 +120,11 @@ MathQuillInput.defaultProps = {
   readOnly: true
 }
 
-const styles = createStyleSheet('MathQuillInput', {
+const styles = {
   hidden: {
     opacity: 0.2,
     display: 'none'
   }
-});
+};
 
-export default withStyles(styles)(MathQuillInput);
+export default withStyles(styles, { name: 'MathQuillInput' })(MathQuillInput);
