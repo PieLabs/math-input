@@ -4,9 +4,11 @@ const stubField = () => {
   const out = {}
 
   out.reset = () => {
-    out.latex = stub();
+    out.latex = stub().returns('latex');
     out.focus = stub();
     out.cmd = stub();
+    out.keystroke = stub();
+    out.write = stub();
   }
 
   out.reset();
@@ -16,9 +18,9 @@ const stubField = () => {
 export const staticField = stubField();
 export const mathField = stubField();
 
-const MQ = {
-  StaticMath: () => staticField,
-  MathField: () => mathField
+export const MQ = {
+  StaticMath: stub().returns(staticField),
+  MathField: stub().returns(mathField)
 }
 
 export default {

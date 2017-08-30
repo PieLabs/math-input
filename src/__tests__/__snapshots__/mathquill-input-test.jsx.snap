@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MathQuillInput readonly false 1`] = `
+exports[`snapshots MathQuillInput readonly false 1`] = `
 <div
   onClick={[Function]}
 >
@@ -20,7 +20,7 @@ exports[`MathQuillInput readonly false 1`] = `
 </div>
 `;
 
-exports[`MathQuillInput readonly true 1`] = `
+exports[`snapshots MathQuillInput readonly true 1`] = `
 <div
   onClick={[Function]}
 >

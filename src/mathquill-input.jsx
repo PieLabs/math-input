@@ -84,11 +84,6 @@ export class MathQuillInput extends React.Component {
     this.updateMathField();
   }
 
-  componentWillUnmount() {
-
-  }
-
-
   componentDidUpdate() {
     log('[componentDidUpdate] readOnly: ', this.props.readOnly);
     this.updateMathField();
