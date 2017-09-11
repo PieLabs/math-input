@@ -52,7 +52,7 @@ export class MathInput extends React.Component {
     }
 
     this.onInputFocus = (e) => {
-      log('onInputFocus');
+      log('[onInputFocus]');
 
       this.setState({ showCalculator: true });
       if (this.props.onFocus) {
@@ -60,8 +60,8 @@ export class MathInput extends React.Component {
       }
     }
 
-    this.blur = () => {
-      log('blur ... ');
+    this.blur = (e) => {
+      log('[blur] ');
       this.setState({ showCalculator: false });
       if (this.props.onBlur) {
         this.props.onBlur(e);
