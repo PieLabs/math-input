@@ -1,11 +1,14 @@
 const path = require('path');
 
 module.exports = {
-  entry: './entry.jsx',
+  entry: {
+    main: './entry.jsx',
+    editable: './editable-math-input.jsx'
+  },
   devtool: 'cheap-eval-source-map',
   context: __dirname,
   output: {
-    filename: './bundle.js',
+    filename: './[name].js',
     path: __dirname
   },
   module: {

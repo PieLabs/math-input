@@ -39,6 +39,7 @@ export class MathQuillInput extends React.Component {
   }
 
   onInputEdit(mf) {
+    if (!this.props.onChange) return;
     this.props.onChange(this.mathField.latex());
   }
 
@@ -48,16 +49,21 @@ export class MathQuillInput extends React.Component {
 
   onFocus(e) {
     log('onFocus..');
-    this.props.onFocus(e)
+    if (this.props.onFocus) {
+      this.props.onFocus(e)
+    }
   }
 
   onBlur(e) {
     log('onBlur..');
-    this.props.onBlur(e)
+    e.preventDefault();
+    if (this.props.onBlur) {
+      this.props.onBlur(e)
+    }
   }
 
   shouldComponentUpdate(nextProps) {
-    const shouldUpdate = nextProps.latex !== this.mathField.latex() || nextProps.readOnly !== this.props.readOnly;
+    const shouldUpdate = nextProps.latex !== this.mathField.latex();
     log('[shouldComponentUpdate]', shouldUpdate);
     return shouldUpdate;
   }
@@ -93,6 +99,7 @@ export class MathQuillInput extends React.Component {
     const inputClassNames = classNames(readOnly && classes.hidden);
     const staticClassNames = classNames(!readOnly && classes.hidden);
 
+    // onBlur={this.onBlur}
     return (
       <div
         ref={r => this.el = r}
@@ -101,7 +108,6 @@ export class MathQuillInput extends React.Component {
           <span
             ref={r => this.input = r}
             onFocus={this.onFocus}
-            onBlur={this.onBlur}
           ></span>
         </div>
         <div className={staticClassNames}>
