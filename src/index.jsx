@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import Card, { CardActions, CardContent } from 'material-ui/Card';
 
+import EditableMathInput from './editable-math-input';
 import Keypad from './keypad';
 import MathQuillInput from './mathquill-input';
 import Portal from 'react-portal';
@@ -10,14 +11,15 @@ import { withStyles } from 'material-ui/styles';
 
 const log = debug('math-input');
 
+export { MathQuillInput, Keypad, EditableMathInput }
 
 const addLeftBracket = s => s.indexOf('\\(') === 0 ? s : `\\(${s}`;
 const addRightBracket = s => s.indexOf('\\)') === s.length - 2 ? s : `${s}\\)`;
 const rmLeftBracket = s => s.indexOf('\\(') === 0 ? s.substring(2) : s;
 const rmRightBracket = s => s.indexOf('\\)') === s.length - 2 ? s.substring(0, s.length - 2) : s;
 
-const addBrackets = (s) => addRightBracket(addLeftBracket(s));
-const removeBrackets = (s) => rmRightBracket(rmLeftBracket(s));
+export const addBrackets = (s) => addRightBracket(addLeftBracket(s));
+export const removeBrackets = (s) => rmRightBracket(rmLeftBracket(s));
 
 export class MathInput extends React.Component {
 
@@ -52,7 +54,7 @@ export class MathInput extends React.Component {
     }
 
     this.onInputFocus = (e) => {
-      log('onInputFocus');
+      log('[onInputFocus]');
 
       this.setState({ showCalculator: true });
       if (this.props.onFocus) {
@@ -60,8 +62,8 @@ export class MathInput extends React.Component {
       }
     }
 
-    this.blur = () => {
-      log('blur ... ');
+    this.blur = (e) => {
+      log('[blur] ');
       this.setState({ showCalculator: false });
       if (this.props.onBlur) {
         this.props.onBlur(e);
@@ -70,10 +72,11 @@ export class MathInput extends React.Component {
 
     this.onInputBlur = (e) => {
       this.setState({ removePortal: true });
+      e.persist();
       setTimeout(() => {
-        if (this.state.removePortal) {
-          this.blur();
+        if (this.state.removePortal && this.root !== null) {
           this.setState({ removePortal: false });
+          this.blur(e);
         }
       }, 100);
     }
@@ -95,7 +98,9 @@ export class MathInput extends React.Component {
 
     this.onLatexChange = (latex) => {
       const { onLatexChange } = this.props;
-      onLatexChange(addBrackets(latex));
+      if (onLatexChange) {
+        onLatexChange(addBrackets(latex));
+      }
     }
   }
 
