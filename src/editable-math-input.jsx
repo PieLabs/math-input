@@ -6,18 +6,10 @@ const MQ = MathQuill.getInterface(2);
 
 const log = debug('math-input:editable-math-input');
 
-
 /**
- * Renders a MathQuill math input.
- * 
- * Only calls onChange once 'editing' has moved from true -> false, 
- * so treats the editing step as it's own little process.
+ * Wrapper for MathQuill MQ.MathField.
  */
 export default class EditableMathInput extends React.PureComponent {
-
-  constructor(props) {
-    super(props);
-  }
 
   componentDidMount() {
     this.mathField = MQ.MathField(this.input, {
@@ -27,6 +19,7 @@ export default class EditableMathInput extends React.PureComponent {
     });
     this.mathField.latex(this.props.latex);
   }
+
   clear() {
     this.mathField.latex('');
     return '';
