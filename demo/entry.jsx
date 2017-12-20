@@ -1,4 +1,5 @@
-import MathInput from '../src';
+import MathInput, { HorizontalKeypad } from '../src';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -23,10 +24,7 @@ class Demo extends React.Component {
       <label> Read Only ?
         <input type="checkbox" checked={readOnly} onChange={() => this.setState({ readOnly: !this.state.readOnly })} />
       </label>
-      <MathInput
-        readOnly={readOnly}
-        latex={latex}
-        onLatexChange={this.onChange} />
+      <HorizontalKeypad />
       <pre>{JSON.stringify(latex, null, '  ')}</pre>
     </div>
   }
