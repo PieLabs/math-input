@@ -13,7 +13,7 @@ export const buttonStyle = () => ({
   root: {
     borderRadius: '0',
     marginRight: '5px',
-    marginBottom: '1px',
+    marginBottom: '0px',
     width: '100%',
   },
   label: {
